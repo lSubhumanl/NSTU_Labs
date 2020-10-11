@@ -5,6 +5,9 @@
 
 using namespace std;
 
+//инициализируем статическую переменную
+int SquareMatrix::_count = 0;
+
 //конструктор по умолчанию
 SquareMatrix::SquareMatrix(int rank, double ** matrix)
 {
@@ -19,6 +22,9 @@ SquareMatrix::SquareMatrix(int rank, double ** matrix)
 	//сохраняем ранг и копируем содержимое матрицы
 	_rank = rank;
 	_matrix = copyMatrix(rank, matrix);
+
+	//увеличиваем счетчик
+	_count++;
 }
 
 //конструктор копирования
@@ -27,6 +33,9 @@ SquareMatrix::SquareMatrix(const SquareMatrix & matrix)
 	//копируем ранг и содержимое матрицы
 	_rank = matrix._rank;
 	_matrix = copyMatrix(matrix._rank, matrix._matrix);
+
+	//увеличиваем счетчик
+	_count++;
 }
 
 //деструктор
@@ -36,6 +45,9 @@ SquareMatrix::~SquareMatrix()
 	for (int i = 0; i < _rank; i++)
 		delete[] _matrix[i];
 	delete[] _matrix;
+
+	//уменьшаем счетчик
+	_count--;
 }
 
 //изменение матрицы
@@ -129,17 +141,47 @@ double SquareMatrix::determinant()
 	return det;
 }
 
-//вывод на экран
-void SquareMatrix::show()
+//преобразование в строку
+char* SquareMatrix::toString()
 {
+	//длина результирующей строки
+	int str_len = 1024;
+	//длина строки, содержащей число
+	int number_len = 15;
+
+	//создаем результирующую строку
+	char* str = new char[str_len];
+	//и индекс, который будет по ней двигаться
+	int index = 0;
+
+	//пробегаемся по всем числам матрицы
 	for (int i = 0; i < _rank; i++)
 	{
 		for (int j = 0; j < _rank; j++)
-			cout << _matrix[i][j] << '\t';
-		cout << endl;
+		{
+			//каждое число преобразуем в строку с помощью ффункции _itoa_s
+			char* number = new char[number_len];
+			_itoa_s(_matrix[i][j], number, number_len, 10);
+
+			//переносим строковое представление числа в результирующую строку
+			for (int k = 0; k < strlen(number); k++)
+				str[index++] = number[k];
+			//после каждого числа пишем табуляцию
+			str[index++] = '\t';
+
+			delete[] number;
+		}
+
+		//в конце каждой строки матрицы пишем символ переноса строки
+		str[index++] = '\n';
 	}
-	cout << endl;
+
+	str[index] = '\0';
+
+	return str;
 }
+
+
 
 //скопировать матрицу
 double** SquareMatrix::copyMatrix(int rank, double** matrix)
