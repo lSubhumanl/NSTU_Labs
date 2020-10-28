@@ -113,22 +113,24 @@ public:
 	/*
 		Оператор сложения матриц
 		args:
-			matrix - матрица, с которой складывается текущий объект
+			matrix1 - левое слагаемое
+			matrix2 - правое слагаемое
 		Исключения:
 			если _rank != matrix._rank, то есть матрицы должны быть одинакового размера
-		return - матрица-результат сложения
+		return - матрица-результат сложения матрицы1 с матрицей2
 	*/
-	SquareMatrix operator+(const SquareMatrix& matrix);
+	friend SquareMatrix operator+(const SquareMatrix& matrix1,const SquareMatrix& matrix2);
 
 	/*
 		Оператор вычитания матриц
 		args:
-			matrix - вычитаемая матрица
+			matrix1 - уменьшаемая матрица
+			matrix2 - вычитаемая матрица
 		Исключения:
 			если _rank != matrix._rank, то есть матрицы должны быть одинакового размера
-		return - матрица-результат вычитания
+		return - матрица-результат вычитания матрицы2 из матрицы1
 	*/
-	SquareMatrix operator-(const SquareMatrix& matrix);
+	friend SquareMatrix operator-(const SquareMatrix& matrix1, const SquareMatrix& matrix2);
 
 	/*
 		Оператор индексирования

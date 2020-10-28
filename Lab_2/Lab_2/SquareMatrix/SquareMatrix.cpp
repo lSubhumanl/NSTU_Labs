@@ -184,37 +184,37 @@ char* SquareMatrix::toString()
 /*--------------ЛАБОРАТОРНАЯ РАБОТА 2--------------*/
 
 //оператор сложения матриц
-SquareMatrix SquareMatrix::operator+(const SquareMatrix& matrix)
+SquareMatrix operator+(const SquareMatrix& matrix1, const SquareMatrix& matrix2)
 {
 	//матрицы должны быть одинакового размера
-	if (_rank != matrix._rank)
+	if (matrix1._rank != matrix2._rank)
 		throw exception("Bad matrix rank");
 
-	//результирующая мматрица инициализируется текущей матрицей
-	SquareMatrix result(*this);
+	//результирующая мматрица инициализируется матрицей1
+	SquareMatrix result(matrix1);
 
 	//складываем соответствующие элементы матриц
 	for (int i = 0; i < result._rank; i++)
 		for (int j = 0; j < result._rank; j++)
-			result._matrix[i][j] += matrix._matrix[i][j];
+			result._matrix[i][j] += matrix2._matrix[i][j];
 
 	return result;
 }
 
 //оператор вычитания матриц
-SquareMatrix SquareMatrix::operator-(const SquareMatrix& matrix)
+SquareMatrix operator-(const SquareMatrix& matrix1, const SquareMatrix& matrix2)
 {
 	//матрицы должны быть одинакового размера
-	if (_rank != matrix._rank)
+	if (matrix1._rank != matrix2._rank)
 		throw exception("Bad matrix rank");
 
-	//результирующая мматрица инициализируется текущей матрицей
-	SquareMatrix result(*this);
+	//результирующая мматрица инициализируется матрицей2
+	SquareMatrix result(matrix1);
 
 	//вычитаем соответствующие элементы матриц
 	for (int i = 0; i < result._rank; i++)
 		for (int j = 0; j < result._rank; j++)
-			result._matrix[i][j] -= matrix._matrix[i][j];
+			result._matrix[i][j] -= matrix2._matrix[i][j];
 
 	return result;
 }
