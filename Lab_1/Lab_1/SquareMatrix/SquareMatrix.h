@@ -6,6 +6,8 @@ class SquareMatrix
 {
 public:
 	
+	/*--------------ЛАБОРАТОРНАЯ РАБОТА 1--------------*/
+
 	/*
 		конструктор с параметрами
 		создает матрицу ранга rank и коэффициентами из matrix
@@ -106,6 +108,57 @@ public:
 	*/
 	char* toString();
 
+	/*--------------ЛАБОРАТОРНАЯ РАБОТА 2--------------*/
+
+	/*
+		Оператор сложения матриц
+		args:
+			matrix1 - левое слагаемое
+			matrix2 - правое слагаемое
+		Исключения:
+			если _rank != matrix._rank, то есть матрицы должны быть одинакового размера
+		return - матрица-результат сложения матрицы1 с матрицей2
+	*/
+	friend SquareMatrix operator+(const SquareMatrix& matrix1,const SquareMatrix& matrix2);
+
+	/*
+		Оператор вычитания матриц
+		args:
+			matrix1 - уменьшаемая матрица
+			matrix2 - вычитаемая матрица
+		Исключения:
+			если _rank != matrix._rank, то есть матрицы должны быть одинакового размера
+		return - матрица-результат вычитания матрицы2 из матрицы1
+	*/
+	friend SquareMatrix operator-(const SquareMatrix& matrix1, const SquareMatrix& matrix2);
+
+	/*
+		Оператор индексирования
+		args:
+			index - номер строки матрицы
+		Исключения:
+			если index < 0
+			если index >=_rank
+		return - копия массива-строки матрицы
+	*/
+	double* operator[](int index);
+
+	/*
+		Оператор ()
+		return - значение определителя матрицы
+	*/
+	double operator()();
+
+	/*
+		Оператор присваивания матриц
+		args:
+			matrix - присваиваемая матрица
+		return - ссылка на текущую матрицу
+		ссылка необходима для того, чтобы сделать множественное присваивание
+		к примеру, obj1 = obj2 = obj3 = obj4;
+	*/
+	SquareMatrix& operator=(const SquareMatrix& matrix);
+
 private:
 
 	//порядок матрицы (ранг)
@@ -135,6 +188,5 @@ private:
 			matrix - сама матрица ранга rank
 		return - значение минора
 	*/
-	double minor(int row, int col, int rank, double** matrix);	
-
+	double minor(int row, int col, int rank, double** matrix);
 };

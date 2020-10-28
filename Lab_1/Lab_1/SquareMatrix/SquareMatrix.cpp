@@ -181,6 +181,81 @@ char* SquareMatrix::toString()
 	return str;
 }
 
+/*--------------ЛАБОРАТОРНАЯ РАБОТА 2--------------*/
+
+//оператор сложения матриц
+SquareMatrix operator+(const SquareMatrix& matrix1, const SquareMatrix& matrix2)
+{
+	//матрицы должны быть одинакового размера
+	if (matrix1._rank != matrix2._rank)
+		throw exception("Bad matrix rank");
+
+	//результирующая мматрица инициализируется матрицей1
+	SquareMatrix result(matrix1);
+
+	//складываем соответствующие элементы матриц
+	for (int i = 0; i < result._rank; i++)
+		for (int j = 0; j < result._rank; j++)
+			result._matrix[i][j] += matrix2._matrix[i][j];
+
+	return result;
+}
+
+//оператор вычитания матриц
+SquareMatrix operator-(const SquareMatrix& matrix1, const SquareMatrix& matrix2)
+{
+	//матрицы должны быть одинакового размера
+	if (matrix1._rank != matrix2._rank)
+		throw exception("Bad matrix rank");
+
+	//результирующая мматрица инициализируется матрицей2
+	SquareMatrix result(matrix1);
+
+	//вычитаем соответствующие элементы матриц
+	for (int i = 0; i < result._rank; i++)
+		for (int j = 0; j < result._rank; j++)
+			result._matrix[i][j] -= matrix2._matrix[i][j];
+
+	return result;
+}
+
+//оператор индексирования
+double* SquareMatrix::operator[](int index)
+{
+	//проверяем индекс на нарушение границ
+	if ((index < 0) || (index >= _rank))
+		throw exception("Bad index");
+
+	//копируем строку матрицы
+	double* row = new double[_rank];
+	for (int i = 0; i < _rank; i++)
+		row[i] = _matrix[index][i];
+
+	return row;
+}
+
+//оператор вычисления функции
+double SquareMatrix::operator()()
+{
+	//вычисляем определитель матрицы
+	return determinant();
+}
+
+//оператор присваивания
+SquareMatrix& SquareMatrix::operator=(const SquareMatrix& matrix)
+{
+	//удаляем текущую матрицу
+	for (int i = 0; i < _rank; i++)
+		delete[] _matrix[i];
+	delete[] _matrix;
+
+	//копируем ранг и содержимое присваиваемой матрицы
+	_rank = matrix._rank;
+	_matrix = copyMatrix(matrix._rank, matrix._matrix);
+
+	return *this;
+}
+
 
 
 //скопировать матрицу

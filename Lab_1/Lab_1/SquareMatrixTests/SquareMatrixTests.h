@@ -22,3 +22,17 @@ void transponseTest();
 //тест метода вычисления определителя
 void determinantTest();
 
+//тест оператора сложения
+void additionOperatorTest();
+
+//тест оператора вычитания
+void subtractionOperatorTest();
+
+//тест оператора индексирования
+void indexingOperatorTest();
+
+//тест оператора ()
+void functionOperatorTest();
+
+//тест оператора присваивания
+void assignmentOperatorTest();
