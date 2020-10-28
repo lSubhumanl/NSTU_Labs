@@ -262,6 +262,7 @@ void transponseTest()
 	cout << "transponse() test completed!" << endl;
 }
 
+//тест метода вычисления определителя
 void determinantTest()
 {
 	//создаем матрицу для сравнения
@@ -286,4 +287,159 @@ void determinantTest()
 		throw exception("Error in determinant() method");
 	
 	cout << "determinant() test completed!" << endl;
+}
+
+//тест оператора сложения
+void additionOperatorTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+
+	//очищаем память от матрицы
+	for (int i = 0; i < rank; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	//складываем матрицу с собой и сохраняем результат
+	SquareMatrix result = matrixObject + matrixObject;
+
+	//выходит, что в результирующей матрице все элементы должны быть в два раза больше
+	for(int i =0;i<result.getRank();i++)
+		for(int j = 0;j<result.getRank();j++)
+			if(result.getValue(i,j) != 2*matrixObject.getValue(i,j))
+				throw exception("Error in + operator");
+
+	cout << "+ operator test completed!" << endl;
+}
+
+//тест оператора вычитания
+void subtractionOperatorTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+
+	//очищаем память от матрицы
+	for (int i = 0; i < rank; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	//складываем матрицу с собой и сохраняем результат
+	SquareMatrix result = matrixObject - matrixObject;
+
+	//выходит, что в результирующей матрице все элементы должны быть равны нулю
+	for (int i = 0; i < result.getRank(); i++)
+		for (int j = 0; j < result.getRank(); j++)
+			if (result.getValue(i, j) != 0)
+				throw exception("Error in - operator");
+
+	cout << "- operator test completed!" << endl;
+}
+
+//тест оператора []
+void indexingOperatorTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+
+	//очищаем память от матрицы
+	for (int i = 0; i < rank; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	//выходит, что в результирующей матрице все элементы должны быть равны нулю
+	for (int i = 0; i < matrixObject.getRank(); i++)
+		for (int j = 0; j < matrixObject.getRank(); j++)
+			if (matrixObject.getValue(i, j) != matrixObject[i][j])
+				throw exception("Error in [] operator");
+
+	cout << "[] operator test completed!" << endl;
+}
+
+//тест оператора ()
+void functionOperatorTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+	matrix[0][0] = 2;
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+
+	if (matrixObject() != matrixObject.determinant())
+		throw exception("Error in () operator");
+
+	cout << "() operator test completed!" << endl;
+}
+
+//тест оператора присваивания
+void assignmentOperatorTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+
+	//очищаем память от матрицы
+	for (int i = 0; i < rank; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	//складываем матрицу с собой и сохраняем результат
+	SquareMatrix result = matrixObject;
+
+	if(result.getRank() != matrixObject.getRank())
+		throw exception("Error in = operator");
+
+	//выходит, что в результирующей матрице все элементы должны быть равны нулю
+	for (int i = 0; i < result.getRank(); i++)
+		for (int j = 0; j < result.getRank(); j++)
+			if (result.getValue(i, j) != matrixObject.getValue(i,j))
+				throw exception("Error in = operator");
+
+	cout << "= operator test completed!" << endl;
 }
