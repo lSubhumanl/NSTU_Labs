@@ -106,6 +106,24 @@ int main()
 		cout << exc.what() << endl;
 	}
 
+	try
+	{
+		binaryInputOutputTest();
+	}
+	catch (const std::exception& exc)
+	{
+		cout << exc.what() << endl;
+	}
+
+	try
+	{
+		fileInputOutputTest();
+	}
+	catch (const std::exception& exc)
+	{
+		cout << exc.what() << endl;
+	}
+
 	cout << "Press any key:" << endl;
 	char c;
 	cin >> c;
