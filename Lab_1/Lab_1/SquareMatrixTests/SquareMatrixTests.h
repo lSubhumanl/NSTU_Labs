@@ -36,3 +36,9 @@ void functionOperatorTest();
 
 //тест оператора присваивания
 void assignmentOperatorTest();
+
+//тест ввода-вывода в бинарный файл
+void binaryInputOutputTest();
+
+//тест ввода-вывода в текстовый файл
+void fileInputOutputTest();

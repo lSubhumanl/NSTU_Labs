@@ -1,9 +1,6 @@
 #include "SquareMatrix.h"
 #include <exception>
 #include <cmath>
-#include <iostream>
-
-using namespace std;
 
 //инициализируем статическую переменную
 int SquareMatrix::_count = 0;
@@ -256,8 +253,6 @@ SquareMatrix& SquareMatrix::operator=(const SquareMatrix& matrix)
 	return *this;
 }
 
-
-
 //скопировать матрицу
 double** SquareMatrix::copyMatrix(int rank, double** matrix)
 {
@@ -333,3 +328,115 @@ double SquareMatrix::minor(int row, int col, int rank, double** matrix)
 
 	return det;
 }
+
+/*--------------ЛАБОРАТОРНАЯ РАБОТА 3--------------*/
+
+//вывод в обычный поток
+ostream& operator<<(ostream& stream, const SquareMatrix& matrix)
+{
+	//выводим все элементы матрицы
+	for (int i = 0; i < matrix._rank; i++)
+	{
+		for (int j = 0; j < matrix._rank; j++)
+			stream << matrix._matrix[i][j] << endl;
+		stream << endl;
+	}
+
+	return stream;
+}
+
+//вывод в файловый поток
+ofstream& operator<<(ofstream& stream, const SquareMatrix& matrix)
+{
+	if (!stream.is_open())
+		throw exception("Stream is closed");
+
+	//выводим ранг матрицы
+	stream << matrix._rank << endl;
+	//выводим все элементы матрицы
+	for (int i = 0; i < matrix._rank; i++)
+	{
+		for (int j = 0; j < matrix._rank; j++)
+			stream << matrix._matrix[i][j] << endl;
+		stream << endl;
+	}
+	
+	return stream;
+}
+
+//чтение с обычного потока
+istream& operator>>(istream& stream, SquareMatrix& matrix)
+{
+	for (int i = 0; i < matrix._rank; i++)
+		delete[] matrix._matrix[i];
+	delete[] matrix._matrix;
+
+	//считываем ранг матрицы
+	stream >> matrix._rank;
+	matrix._matrix = new double* [matrix._rank];
+	//считываем все элементы матрицы
+	for (int i = 0; i < matrix._rank; i++)
+	{
+		matrix._matrix[i] = new double [matrix._rank];
+		for (int j = 0; j < matrix._rank; j++)
+			stream >> matrix._matrix[i][j];
+	}
+	
+	return stream;
+}
+
+//чтение с файлового потока
+ifstream& operator>>(ifstream& stream, SquareMatrix& matrix)
+{
+	for (int i = 0; i < matrix._rank; i++)
+		delete[] matrix._matrix[i];
+	delete[] matrix._matrix;
+
+	//считываем ранг матрицы
+	stream >> matrix._rank;
+	matrix._matrix = new double* [matrix._rank];
+	//считываем все элементы матрицы
+	for (int i = 0; i < matrix._rank; i++)
+	{
+		matrix._matrix[i] = new double [matrix._rank];
+		for (int j = 0; j < matrix._rank; j++)
+			stream >> matrix._matrix[i][j];
+	}
+	
+	return stream;
+}
+
+//запись в бинарный файл
+void SquareMatrix::write(fstream& file)
+{
+	if (!file.is_open())
+		throw exception("File is closed");
+
+	//записываем последовательно ранг матрицы и ее элементы
+	file.write((char*)&_rank, sizeof(int));
+	for (int i = 0; i < _rank; i++)
+		for (int j = 0; j < _rank; j++)
+			file.write((char*)&_matrix[i][j], sizeof(double));
+}
+
+//чтение из бинарного файла
+void SquareMatrix::read(fstream& file)
+{
+	if (!file.is_open())
+		throw exception("File is closed");
+
+	for (int i = 0; i < _rank; i++)
+		delete[] _matrix[i];
+	delete[] _matrix;
+
+	//считываем последовательно ранг матрицы и ее элементы
+	file.read((char*)&_rank, sizeof(int));
+	_matrix = new double* [_rank];
+	for (int i = 0; i < _rank; i++)
+	{
+		_matrix[i] = new double[_rank];
+		for (int j = 0; j < _rank; j++)
+			file.read((char*)&_matrix[i][j], sizeof(double));
+	}
+}
+
