@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../SquareMatrix/SquareMatrix.h"
+#include "../Matrix/Matrix.h"
 
-class SquareMatrixTests
+class MatrixTests
 {
 private:
 
@@ -25,9 +25,6 @@ public:
 	//тест метода транспонирования матрицы
 	void transponse();
 
-	//тест оператора присваивания
-	void assignmentOperator();
-
 	//тест оператора сложения
 	void additionOperator();
 
@@ -37,13 +34,13 @@ public:
 	//тест оператора индексирования
 	void indexingOperator();
 
+	//тест оператора присваивания
+	void assignmentOperator();
+
 	//тест ввода-вывода в бинарный файл
 	void binaryInputOutput();
 
 	//тест ввода-вывода в текстовый файл
 	void fileInputOutput();
-
-	//тест вычисления определителя
-	void determinant();
 
 };
