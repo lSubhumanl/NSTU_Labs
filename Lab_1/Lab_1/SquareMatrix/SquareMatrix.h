@@ -1,6 +1,11 @@
 
 #pragma once
 
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
 //класс квадратной матрицы
 class SquareMatrix
 {
@@ -158,6 +163,46 @@ public:
 		к примеру, obj1 = obj2 = obj3 = obj4;
 	*/
 	SquareMatrix& operator=(const SquareMatrix& matrix);
+
+	/*--------------ЋјЅќ–ј“ќ–Ќјя –јЅќ“ј 3--------------*/
+
+	//вывод в обычный поток
+	//args:
+	//	stream - ссылка на поток вывода
+	//	matrix - выводима€ матрица
+	//return - ссылка на поток вывода
+	friend ostream& operator<<(ostream& stream, const SquareMatrix& matrix);
+
+	//вывод в ффайловый	поток
+	//args:
+	//	stream - ссылка на файловый поток вывода
+	//	matrix - выводима€ матрица
+	//return - ссылка на файловый поток вывода
+	friend ofstream& operator<<(ofstream& stream, const SquareMatrix& matrix);
+
+	//чтение с обычного потока
+	//args:
+	//	stream - ссылка на поток ввода
+	//	matrix - вводима€ матрица
+	//return - ссылка на поток ввода
+	friend istream& operator>>(istream& stream, SquareMatrix& matrix);
+
+	//чтение с файлового потока
+	//args:
+	//	stream - ссылка на файловый поток ввода
+	//	matrix - вводима€ матрица
+	//return - ссылка на файловый поток ввода
+	friend ifstream& operator>>(ifstream& stream, SquareMatrix& matrix);
+
+	//запись в бинарный файл
+	//args:
+	//	file - ссылка на бинарный файл
+	void write(fstream& file);
+
+	//чтение с бинарного файла
+	//args:
+	//	file - ссылка на бинарный файл
+	void read(fstream& file);
 
 private:
 

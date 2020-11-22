@@ -443,3 +443,96 @@ void assignmentOperatorTest()
 
 	cout << "= operator test completed!" << endl;
 }
+
+//тест ввода-вывода в бинарный файл
+void binaryInputOutputTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+	//инициализируем второй объект матрицей из одного элемента
+	SquareMatrix matrixObject2(rank-2, matrix);
+
+	fstream file("test.bin", ios::out | ios::in | ios::trunc | ios::binary);
+
+	matrixObject.write(file);
+
+	file.seekg(0, ios::beg);
+
+	matrixObject2.read(file);
+
+	file.close();
+
+	if (matrixObject2.getRank() != matrixObject.getRank())
+		throw exception("Error in binary input-output");
+
+	//выходит, что в результирующей матрице все элементы должны быть равны нулю
+	for (int i = 0; i < matrixObject.getRank(); i++)
+		for (int j = 0; j < matrixObject.getRank(); j++)
+			if (matrixObject.getValue(i, j) != matrixObject2.getValue(i, j))
+				throw exception("Error in binary input-output");
+
+	//очищаем память от матрицы
+	for (int i = 0; i < rank; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	cout << "The binary input-output was tested successfully!" << endl;
+}
+
+//тест ввода-вывода в текстовый файл
+void fileInputOutputTest()
+{
+	//создаем матрицу
+	int rank = 3, value = 1;
+	double** matrix = new double* [rank];
+	for (int i = 0; i < rank; i++)
+	{
+		matrix[i] = new double[rank];
+		for (int j = 0; j < rank; j++)
+			matrix[i][j] = value++;
+	}
+
+	//инициализируем объект матрицей
+	SquareMatrix matrixObject(rank, matrix);
+	//инициализируем второй объект матрицей из одного элемента
+	SquareMatrix matrixObject2(rank - 2, matrix);
+
+	ofstream output("test.txt", ios::out | ios::trunc);
+
+	output << matrixObject;
+
+	output.close();
+
+	ifstream input("test.txt", ios::in);
+
+	input >> matrixObject2;
+
+	input.close();
+
+	if (matrixObject2.getRank() != matrixObject.getRank())
+		throw exception("Error in file input-output");
+
+	//выходит, что в результирующей матрице все элементы должны быть равны нулю
+	for (int i = 0; i < matrixObject.getRank(); i++)
+		for (int j = 0; j < matrixObject.getRank(); j++)
+			if (matrixObject.getValue(i, j) != matrixObject2.getValue(i, j))
+				throw exception("Error in file input-output");
+
+	//очищаем память от матрицы
+	for (int i = 0; i < rank; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	cout << "The file input-output was tested successfully!" << endl;
+
+}
