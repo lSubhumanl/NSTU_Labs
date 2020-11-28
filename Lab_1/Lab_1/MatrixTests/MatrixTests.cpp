@@ -1,4 +1,4 @@
-#include "SquareMatrixTests.h"
+#include "MatrixTests.h"
 #include <exception>
 #include <iostream>
 #include <cmath>
@@ -10,7 +10,7 @@ const int MIN = -100;
 const int MAX = 100;
 
 //очистка памяти
-void SquareMatrixTests::clearMemory(int rows, int cols, double** matrix)
+void MatrixTests::clearMemory(int rows, int cols, double** matrix)
 {
 	for (int i = 0; i < rows; i++)
 		delete[] matrix[i];
@@ -18,9 +18,9 @@ void SquareMatrixTests::clearMemory(int rows, int cols, double** matrix)
 }
 
 //тест конструктора с параметрами
-void SquareMatrixTests::constructorWithParametrs()
+void MatrixTests::constructorWithParametrs()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -31,7 +31,7 @@ void SquareMatrixTests::constructorWithParametrs()
 	}
 
 	//инициализируем объект конструктором с параметром
-	SquareMatrix received(expectedRows, expectedMatrix);
+	Matrix received(expectedRows, expectedCols, expectedMatrix);
 
 	int receivedRows = received.getRows();
 	int receivedCols = received.getCols();
@@ -72,9 +72,9 @@ void SquareMatrixTests::constructorWithParametrs()
 }
 
 //тест конструктора копирования
-void SquareMatrixTests::copyConstructor()
+void MatrixTests::copyConstructor()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -85,7 +85,7 @@ void SquareMatrixTests::copyConstructor()
 	}
 
 	//создаем матрицу с помощью конструктора с параметрами, второй объект - инициализируем с помощью объекта
-	SquareMatrix matrixForCopy(expectedRows, expectedMatrix), received(matrixForCopy);
+	Matrix matrixForCopy(expectedRows, expectedCols, expectedMatrix), received(matrixForCopy);
 
 	int receivedRows = received.getRows();
 	int receivedCols = received.getCols();
@@ -126,9 +126,9 @@ void SquareMatrixTests::copyConstructor()
 }
 
 //тест метода setMatrix()
-void SquareMatrixTests::setMatrix()
+void MatrixTests::setMatrix()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -139,7 +139,7 @@ void SquareMatrixTests::setMatrix()
 	}
 
 	//создаем объект и изменяем в нем матрицу
-	SquareMatrix received(1, expectedMatrix);
+	Matrix received(1, 1, expectedMatrix);
 	received.setMatrix(expectedRows, expectedCols, expectedMatrix);
 
 	int receivedRows = received.getRows();
@@ -181,9 +181,9 @@ void SquareMatrixTests::setMatrix()
 }
 
 //тест транспонирования
-void SquareMatrixTests::transponse()
+void MatrixTests::transponse()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -194,7 +194,7 @@ void SquareMatrixTests::transponse()
 	}
 
 	//создаем матрицу и транспонируем ее
-	SquareMatrix received(expectedRows, expectedMatrix);
+	Matrix received(expectedRows, expectedCols, expectedMatrix);
 	received.transponse();
 
 	int receivedRows = received.getRows();
@@ -237,64 +237,10 @@ void SquareMatrixTests::transponse()
 	cout << "Transponse() test completed!" << endl;
 }
 
-//тест оператора присваивания
-void SquareMatrixTests::assignmentOperator()
-{
-	int expectedRows = 4;
-	int expectedCols = 4;
-	double** expectedMatrix = new double* [expectedRows];
-	for (int i = 0; i < expectedRows; i++)
-	{
-		expectedMatrix[i] = new double[expectedCols];
-		for (int j = 0; j < expectedCols; j++)
-			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
-	}
-
-	//создаем матрицу с помощью конструктора с параметрами, второй объект - инициализируем с помощью объекта
-	SquareMatrix matrixForCopy(expectedRows, expectedMatrix), received = matrixForCopy;
-
-	int receivedRows = received.getRows();
-	int receivedCols = received.getCols();
-	double** receivedMatrix = received.getMatrix();
-
-	//если количество строк и столбцов не совпадает
-	if (receivedRows != expectedRows)
-	{
-		clearMemory(expectedRows, expectedCols, expectedMatrix);
-		clearMemory(receivedRows, receivedCols, receivedMatrix);
-
-		throw exception("Error in assignment operator!");
-	}
-
-	if (receivedCols != expectedCols)
-	{
-		clearMemory(expectedRows, expectedCols, expectedMatrix);
-		clearMemory(receivedRows, receivedCols, receivedMatrix);
-
-		throw exception("Error in assignment operator!");
-	}
-
-	//если элементы матриц не совпадают
-	for (int i = 0; i < expectedRows; i++)
-		for (int j = 0; j < expectedCols; j++)
-			if (receivedMatrix[i][j] != expectedMatrix[i][j])
-			{
-				clearMemory(expectedRows, expectedCols, expectedMatrix);
-				clearMemory(receivedRows, receivedCols, receivedMatrix);
-
-				throw exception("Error in assignment operator!");
-			}
-
-	clearMemory(expectedRows, expectedCols, expectedMatrix);
-	clearMemory(receivedRows, receivedCols, receivedMatrix);
-
-	cout << "Assignment operator test completed!" << endl;
-}
-
 //тест оператора суммы
-void SquareMatrixTests::additionOperator()
+void MatrixTests::additionOperator()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -304,11 +250,10 @@ void SquareMatrixTests::additionOperator()
 			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
 	}
 
-	SquareMatrix sumObj(expectedRows, expectedMatrix);
+	Matrix sumObj(expectedRows, expectedCols, expectedMatrix);
 
 	//инициализируем объект суммой одинаковых матриц
-	SquareMatrix received;
-	received = sumObj + sumObj;
+	Matrix received(sumObj + sumObj);
 	for (int i = 0; i < expectedRows; i++)
 		for (int j = 0; j < expectedCols; j++)
 			expectedMatrix[i][j] *= 2;
@@ -352,23 +297,22 @@ void SquareMatrixTests::additionOperator()
 }
 
 //тест оператора вычитания
-void SquareMatrixTests::subtractionOperator()
+void MatrixTests::subtractionOperator()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
 		expectedMatrix[i] = new double[expectedCols];
 		for (int j = 0; j < expectedCols; j++)
-			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
+			expectedMatrix[i][j] = MIN + rand() %  (MAX + abs(MIN));
 	}
 
-	SquareMatrix sumObj(expectedRows, expectedMatrix);
+	Matrix sumObj(expectedRows, expectedCols, expectedMatrix);
 
 	//инициализируем объект суммой одинаковых матриц
-	SquareMatrix received;
-	received = sumObj - sumObj;
+	Matrix received(sumObj - sumObj);
 	for (int i = 0; i < expectedRows; i++)
 		for (int j = 0; j < expectedCols; j++)
 			expectedMatrix[i][j] = 0;
@@ -412,9 +356,9 @@ void SquareMatrixTests::subtractionOperator()
 }
 
 //тест оператора индексирования
-void SquareMatrixTests::indexingOperator()
+void MatrixTests::indexingOperator()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -423,9 +367,9 @@ void SquareMatrixTests::indexingOperator()
 		for (int j = 0; j < expectedCols; j++)
 			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
 	}
-
+	
 	//инициализируем объект конструктором с параметром
-	SquareMatrix received(expectedRows, expectedMatrix);
+	Matrix received(expectedRows, expectedCols, expectedMatrix);
 
 	//если элементы матриц не совпадают
 	for (int i = 0; i < expectedRows; i++)
@@ -442,10 +386,64 @@ void SquareMatrixTests::indexingOperator()
 	cout << "Indexing operator test completed!" << endl;
 }
 
-//тест бинарного ввода-вывода
-void SquareMatrixTests::binaryInputOutput()
+//тест оператора присваивания
+void MatrixTests::assignmentOperator()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
+	int expectedCols = 4;
+	double** expectedMatrix = new double* [expectedRows];
+	for (int i = 0; i < expectedRows; i++)
+	{
+		expectedMatrix[i] = new double[expectedCols];
+		for (int j = 0; j < expectedCols; j++)
+			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
+	}
+
+	//создаем матрицу с помощью конструктора с параметрами, второй объект - инициализируем с помощью объекта
+	Matrix matrixForCopy(expectedRows, expectedCols, expectedMatrix), received = matrixForCopy;
+
+	int receivedRows = received.getRows();
+	int receivedCols = received.getCols();
+	double** receivedMatrix = received.getMatrix();
+
+	//если количество строк и столбцов не совпадает
+	if (receivedRows != expectedRows)
+	{
+		clearMemory(expectedRows, expectedCols, expectedMatrix);
+		clearMemory(receivedRows, receivedCols, receivedMatrix);
+
+		throw exception("Error in assignment operator!");
+	}
+
+	if (receivedCols != expectedCols)
+	{
+		clearMemory(expectedRows, expectedCols, expectedMatrix);
+		clearMemory(receivedRows, receivedCols, receivedMatrix);
+
+		throw exception("Error in assignment operator!");
+	}
+
+	//если элементы матриц не совпадают
+	for (int i = 0; i < expectedRows; i++)
+		for (int j = 0; j < expectedCols; j++)
+			if (receivedMatrix[i][j] != expectedMatrix[i][j])
+			{
+				clearMemory(expectedRows, expectedCols, expectedMatrix);
+				clearMemory(receivedRows, receivedCols, receivedMatrix);
+
+				throw exception("Error in assignment operator!");
+			}
+
+	clearMemory(expectedRows, expectedCols, expectedMatrix);
+	clearMemory(receivedRows, receivedCols, receivedMatrix);
+
+	cout << "Assignment operator test completed!" << endl;
+}
+
+//тест бинарного ввода-вывода
+void MatrixTests::binaryInputOutput()
+{
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -456,14 +454,14 @@ void SquareMatrixTests::binaryInputOutput()
 	}
 
 	//инициализируем объект для вывода в файл конструктором с параметром
-	SquareMatrix objectForOutput(expectedRows, expectedMatrix);
+	Matrix objectForOutput(expectedRows, expectedCols, expectedMatrix);
 	//выводим объект в файл
 	fstream output("test.bin", ios::out | ios::trunc | ios::binary);
 	objectForOutput.write(output);
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
-	SquareMatrix received(1, expectedMatrix);
+	Matrix received(1, 1, expectedMatrix);
 	fstream input("test.bin", ios::in | ios::binary);
 	received.read(input);
 	input.close();
@@ -507,9 +505,9 @@ void SquareMatrixTests::binaryInputOutput()
 }
 
 //тест файлового ввода-вывода
-void SquareMatrixTests::fileInputOutput()
+void MatrixTests::fileInputOutput()
 {
-	int expectedRows = 4;
+	int expectedRows = 5;
 	int expectedCols = 4;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
@@ -520,14 +518,14 @@ void SquareMatrixTests::fileInputOutput()
 	}
 
 	//инициализируем объект для вывода в файл конструктором с параметром
-	SquareMatrix objectForOutput(expectedRows, expectedMatrix);
+	Matrix objectForOutput(expectedRows, expectedCols, expectedMatrix);
 	//выводим объект в файл
 	fstream output("test.txt");
 	output << objectForOutput;
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
-	SquareMatrix received( 1, expectedMatrix);
+	Matrix received(1, 1, expectedMatrix);
 	fstream input("test.txt");
 	input >> received;
 	input.close();
@@ -568,45 +566,4 @@ void SquareMatrixTests::fileInputOutput()
 	clearMemory(receivedRows, receivedCols, receivedMatrix);
 
 	cout << "File input-output test completed!" << endl;
-}
-
-//тест вычисления определителя
-void SquareMatrixTests::determinant()
-{
-	int rows = 3;
-	int cols = 3;
-	double** matrix = new double* [rows];
-	for (int i = 0; i < rows; i++)
-	{
-		matrix[i] = new double[cols];
-		for (int j = 0; j < cols; j++)
-			matrix[i][j] = MIN + rand() % (MAX + abs(MIN));
-	}
-
-	//высчитываем определитель для матрицы 3го порядка
-	double expected =
-		matrix[0][0] * matrix[1][1] * matrix[2][2] +
-		matrix[0][1] * matrix[1][2] * matrix[2][0] +
-		matrix[0][2] * matrix[1][0] * matrix[2][1] -
-		matrix[0][2] * matrix[1][1] * matrix[2][0] -
-		matrix[0][1] * matrix[1][0] * matrix[2][2] -
-		matrix[0][0] * matrix[1][2] * matrix[2][1];
-
-	//инициализируем объект конструктором с параметром
-	SquareMatrix matrixObj(rows, matrix);
-
-	//вычисляем с помощью метода объекта
-	double received = matrixObj.determinant();
-
-	//сравниваем ожидаемый результат и полученный
-	if (received != expected)
-	{
-		clearMemory(rows, cols, matrix);
-
-		throw exception("Error in determinant()!");
-	}
-
-	clearMemory(rows, cols, matrix);
-
-	cout << "determinant() test completed!" << endl;
 }

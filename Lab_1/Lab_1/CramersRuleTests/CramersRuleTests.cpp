@@ -1,4 +1,4 @@
-#include "SquareMatrixTests.h"
+#include "CramersRuleTests.h"
 #include <exception>
 #include <iostream>
 #include <cmath>
@@ -10,7 +10,7 @@ const int MIN = -100;
 const int MAX = 100;
 
 //очистка памяти
-void SquareMatrixTests::clearMemory(int rows, int cols, double** matrix)
+void CramersRuleTests::clearMemory(int rows, int cols, double** matrix)
 {
 	for (int i = 0; i < rows; i++)
 		delete[] matrix[i];
@@ -18,10 +18,10 @@ void SquareMatrixTests::clearMemory(int rows, int cols, double** matrix)
 }
 
 //тест конструктора с параметрами
-void SquareMatrixTests::constructorWithParametrs()
+void CramersRuleTests::constructorWithParametrs()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -31,7 +31,7 @@ void SquareMatrixTests::constructorWithParametrs()
 	}
 
 	//инициализируем объект конструктором с параметром
-	SquareMatrix received(expectedRows, expectedMatrix);
+	CramersRule received(expectedRows, expectedCols, expectedMatrix);
 
 	int receivedRows = received.getRows();
 	int receivedCols = received.getCols();
@@ -72,10 +72,10 @@ void SquareMatrixTests::constructorWithParametrs()
 }
 
 //тест конструктора копирования
-void SquareMatrixTests::copyConstructor()
+void CramersRuleTests::copyConstructor()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -85,7 +85,7 @@ void SquareMatrixTests::copyConstructor()
 	}
 
 	//создаем матрицу с помощью конструктора с параметрами, второй объект - инициализируем с помощью объекта
-	SquareMatrix matrixForCopy(expectedRows, expectedMatrix), received(matrixForCopy);
+	CramersRule matrixForCopy(expectedRows, expectedCols, expectedMatrix), received(matrixForCopy);
 
 	int receivedRows = received.getRows();
 	int receivedCols = received.getCols();
@@ -126,10 +126,10 @@ void SquareMatrixTests::copyConstructor()
 }
 
 //тест метода setMatrix()
-void SquareMatrixTests::setMatrix()
+void CramersRuleTests::setMatrix()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -139,7 +139,7 @@ void SquareMatrixTests::setMatrix()
 	}
 
 	//создаем объект и изменяем в нем матрицу
-	SquareMatrix received(1, expectedMatrix);
+	CramersRule received(1, 2, expectedMatrix);
 	received.setMatrix(expectedRows, expectedCols, expectedMatrix);
 
 	int receivedRows = received.getRows();
@@ -181,10 +181,10 @@ void SquareMatrixTests::setMatrix()
 }
 
 //тест транспонирования
-void SquareMatrixTests::transponse()
+void CramersRuleTests::transponse()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -194,7 +194,7 @@ void SquareMatrixTests::transponse()
 	}
 
 	//создаем матрицу и транспонируем ее
-	SquareMatrix received(expectedRows, expectedMatrix);
+	CramersRule received(expectedRows, expectedCols, expectedMatrix);
 	received.transponse();
 
 	int receivedRows = received.getRows();
@@ -204,7 +204,7 @@ void SquareMatrixTests::transponse()
 	//все сравнения проводятся с учетом транспонирования
 
 	//если количество строк и столбцов не совпадает
-	if (receivedRows != expectedCols)
+	if (receivedRows != expectedRows)
 	{
 		clearMemory(expectedRows, expectedCols, expectedMatrix);
 		clearMemory(receivedRows, receivedCols, receivedMatrix);
@@ -212,7 +212,7 @@ void SquareMatrixTests::transponse()
 		throw exception("Error in transponse()!");
 	}
 
-	if (receivedCols != expectedRows)
+	if (receivedCols != expectedCols)
 	{
 		clearMemory(expectedRows, expectedCols, expectedMatrix);
 		clearMemory(receivedRows, receivedCols, receivedMatrix);
@@ -222,7 +222,7 @@ void SquareMatrixTests::transponse()
 
 	//если элементы матриц не совпадают
 	for (int i = 0; i < expectedRows; i++)
-		for (int j = 0; j < expectedCols; j++)
+		for (int j = 0; j < expectedCols-1; j++)
 			if (receivedMatrix[j][i] != expectedMatrix[i][j])
 			{
 				clearMemory(expectedRows, expectedCols, expectedMatrix);
@@ -238,10 +238,10 @@ void SquareMatrixTests::transponse()
 }
 
 //тест оператора присваивания
-void SquareMatrixTests::assignmentOperator()
+void CramersRuleTests::assignmentOperator()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -251,7 +251,7 @@ void SquareMatrixTests::assignmentOperator()
 	}
 
 	//создаем матрицу с помощью конструктора с параметрами, второй объект - инициализируем с помощью объекта
-	SquareMatrix matrixForCopy(expectedRows, expectedMatrix), received = matrixForCopy;
+	CramersRule matrixForCopy(expectedRows, expectedCols, expectedMatrix), received = matrixForCopy;
 
 	int receivedRows = received.getRows();
 	int receivedCols = received.getCols();
@@ -292,10 +292,10 @@ void SquareMatrixTests::assignmentOperator()
 }
 
 //тест оператора суммы
-void SquareMatrixTests::additionOperator()
+void CramersRuleTests::additionOperator()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -304,10 +304,10 @@ void SquareMatrixTests::additionOperator()
 			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
 	}
 
-	SquareMatrix sumObj(expectedRows, expectedMatrix);
+	CramersRule sumObj(expectedRows, expectedCols, expectedMatrix);
 
 	//инициализируем объект суммой одинаковых матриц
-	SquareMatrix received;
+	CramersRule received;
 	received = sumObj + sumObj;
 	for (int i = 0; i < expectedRows; i++)
 		for (int j = 0; j < expectedCols; j++)
@@ -352,10 +352,10 @@ void SquareMatrixTests::additionOperator()
 }
 
 //тест оператора вычитания
-void SquareMatrixTests::subtractionOperator()
+void CramersRuleTests::subtractionOperator()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -364,10 +364,10 @@ void SquareMatrixTests::subtractionOperator()
 			expectedMatrix[i][j] = MIN + rand() % (MAX + abs(MIN));
 	}
 
-	SquareMatrix sumObj(expectedRows, expectedMatrix);
+	CramersRule sumObj(expectedRows, expectedCols, expectedMatrix);
 
 	//инициализируем объект суммой одинаковых матриц
-	SquareMatrix received;
+	CramersRule received;
 	received = sumObj - sumObj;
 	for (int i = 0; i < expectedRows; i++)
 		for (int j = 0; j < expectedCols; j++)
@@ -412,10 +412,10 @@ void SquareMatrixTests::subtractionOperator()
 }
 
 //тест оператора индексирования
-void SquareMatrixTests::indexingOperator()
+void CramersRuleTests::indexingOperator()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -425,7 +425,7 @@ void SquareMatrixTests::indexingOperator()
 	}
 
 	//инициализируем объект конструктором с параметром
-	SquareMatrix received(expectedRows, expectedMatrix);
+	CramersRule received(expectedRows, expectedCols, expectedMatrix);
 
 	//если элементы матриц не совпадают
 	for (int i = 0; i < expectedRows; i++)
@@ -443,10 +443,10 @@ void SquareMatrixTests::indexingOperator()
 }
 
 //тест бинарного ввода-вывода
-void SquareMatrixTests::binaryInputOutput()
+void CramersRuleTests::binaryInputOutput()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -456,14 +456,14 @@ void SquareMatrixTests::binaryInputOutput()
 	}
 
 	//инициализируем объект для вывода в файл конструктором с параметром
-	SquareMatrix objectForOutput(expectedRows, expectedMatrix);
+	CramersRule objectForOutput(expectedRows, expectedCols, expectedMatrix);
 	//выводим объект в файл
 	fstream output("test.bin", ios::out | ios::trunc | ios::binary);
 	objectForOutput.write(output);
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
-	SquareMatrix received(1, expectedMatrix);
+	CramersRule received(1, 2, expectedMatrix);
 	fstream input("test.bin", ios::in | ios::binary);
 	received.read(input);
 	input.close();
@@ -507,10 +507,10 @@ void SquareMatrixTests::binaryInputOutput()
 }
 
 //тест файлового ввода-вывода
-void SquareMatrixTests::fileInputOutput()
+void CramersRuleTests::fileInputOutput()
 {
 	int expectedRows = 4;
-	int expectedCols = 4;
+	int expectedCols = 5;
 	double** expectedMatrix = new double* [expectedRows];
 	for (int i = 0; i < expectedRows; i++)
 	{
@@ -520,14 +520,14 @@ void SquareMatrixTests::fileInputOutput()
 	}
 
 	//инициализируем объект для вывода в файл конструктором с параметром
-	SquareMatrix objectForOutput(expectedRows, expectedMatrix);
+	CramersRule objectForOutput(expectedRows, expectedCols, expectedMatrix);
 	//выводим объект в файл
 	fstream output("test.txt");
 	output << objectForOutput;
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
-	SquareMatrix received( 1, expectedMatrix);
+	CramersRule received(1, 2, expectedMatrix);
 	fstream input("test.txt");
 	input >> received;
 	input.close();
@@ -570,11 +570,11 @@ void SquareMatrixTests::fileInputOutput()
 	cout << "File input-output test completed!" << endl;
 }
 
-//тест вычисления определителя
-void SquareMatrixTests::determinant()
+//тест метода решения СЛАУ
+void CramersRuleTests::compute()
 {
 	int rows = 3;
-	int cols = 3;
+	int cols = 4;
 	double** matrix = new double* [rows];
 	for (int i = 0; i < rows; i++)
 	{
@@ -583,8 +583,7 @@ void SquareMatrixTests::determinant()
 			matrix[i][j] = MIN + rand() % (MAX + abs(MIN));
 	}
 
-	//высчитываем определитель для матрицы 3го порядка
-	double expected =
+	double det = 
 		matrix[0][0] * matrix[1][1] * matrix[2][2] +
 		matrix[0][1] * matrix[1][2] * matrix[2][0] +
 		matrix[0][2] * matrix[1][0] * matrix[2][1] -
@@ -592,21 +591,48 @@ void SquareMatrixTests::determinant()
 		matrix[0][1] * matrix[1][0] * matrix[2][2] -
 		matrix[0][0] * matrix[1][2] * matrix[2][1];
 
+	double* expected = new double[rows];
+	
+	expected[0] =
+		matrix[0][3] * matrix[1][1] * matrix[2][2] +
+		matrix[0][1] * matrix[1][2] * matrix[2][3] +
+		matrix[0][2] * matrix[1][3] * matrix[2][1] -
+		matrix[0][2] * matrix[1][1] * matrix[2][3] -
+		matrix[0][1] * matrix[1][3] * matrix[2][2] -
+		matrix[0][3] * matrix[1][2] * matrix[2][1];
+	expected[0] /= det;
+
+	expected[1] =
+		matrix[0][0] * matrix[1][3] * matrix[2][2] +
+		matrix[0][3] * matrix[1][2] * matrix[2][0] +
+		matrix[0][2] * matrix[1][0] * matrix[2][3] -
+		matrix[0][2] * matrix[1][3] * matrix[2][0] -
+		matrix[0][3] * matrix[1][0] * matrix[2][2] -
+		matrix[0][0] * matrix[1][2] * matrix[2][3];
+	expected[1] /= det;
+
+	expected[2] =
+		matrix[0][0] * matrix[1][1] * matrix[2][3] +
+		matrix[0][1] * matrix[1][3] * matrix[2][0] +
+		matrix[0][3] * matrix[1][0] * matrix[2][1] -
+		matrix[0][3] * matrix[1][1] * matrix[2][0] -
+		matrix[0][1] * matrix[1][0] * matrix[2][3] -
+		matrix[0][0] * matrix[1][3] * matrix[2][1];
+	expected[2] /= det;
+
 	//инициализируем объект конструктором с параметром
-	SquareMatrix matrixObj(rows, matrix);
+	CramersRule system(rows, cols, matrix);
+	
+	double* received = system.compute();
+	for (int i = 0; i < rows; i++)
+		if (received[i] != expected[i])
+		{
+			clearMemory(rows, cols, matrix);
 
-	//вычисляем с помощью метода объекта
-	double received = matrixObj.determinant();
-
-	//сравниваем ожидаемый результат и полученный
-	if (received != expected)
-	{
-		clearMemory(rows, cols, matrix);
-
-		throw exception("Error in determinant()!");
-	}
-
+			throw exception("Error in compute()");
+		}
+	
 	clearMemory(rows, cols, matrix);
 
-	cout << "determinant() test completed!" << endl;
+	cout << "Compute() test completed!" << endl;
 }

@@ -1,104 +1,60 @@
-
 #pragma once
 
-#include <fstream>
-#include <iostream>
-
-using namespace std;
+#include "../Matrix/Matrix.h"
 
 //класс квадратной матрицы
-class SquareMatrix
+class SquareMatrix : public Matrix
 {
 public:
-	
-	/*--------------ЛАБОРАТОРНАЯ РАБОТА 1--------------*/
 
 	/*
-		конструктор с параметрами
-		создает матрицу ранга rank и коэффициентами из matrix
-		args:
-			rank - ранг матрицы
-			matrix - двумерный массив коэффициентов
-		Исключения:
-			- если rank <= 0
-			- если matrix == nullptr	
+	Конструктор по умолчанию
+	Создает матрицу размера  1х1 со значением 0
+	*/
+	SquareMatrix();
+	
+	/*
+	конструктор с параметрами
+	создает матрицу ранга rank и коэффициентами из matrix
+	args:
+		rank - ранг матрицы
+		matrix - двумерный массив коэффициентов
+	выбрасывает исключение, если rank меньше 0, а в matrix встречен нулевой указатель
 	*/
 	SquareMatrix(int rank, double ** matrix);
 
 	/*
-		конструктор копирования
-		копирует содержимое объекта matrix
-		args:
-			matrix - копируемая матрица
+	конструктор копирования
+	копирует содержимое объекта matrix
+	args:
+		matrix - копируемая матрица
 	*/
 	SquareMatrix(const SquareMatrix& matrix);
 
-	/*
-		деструктор
-		очищает выделенную память перед уничтожением объекта
-	*/
-	~SquareMatrix();
+
 
 	/*
-		сеттер для матрицы
-		заменяет текущую матрицу на матрицу ранга rank и коэффициентами из matrix
-		args:
-			rank - ранг матрицы
-			matrix - двумерный массив коэффициентов
-		Исключения:
-			- если rank <= 0
-			- если matrix == nullptr
+	изменение матрицы
+	Изменяет текущую матрицу на входную
+	args:
+		rows - количество строк в матрице
+		cols - количество столбцов в матрице
+		matrix - матрица
+	выбрасывает исключение, если rows не равен cols, если rows или cols меньше 0, а в matrix встречен нулевой указатель
 	*/
-	void setMatrix(int rank, double ** matrix);
+	virtual void setMatrix(int rows, int cols, double** matrix) override;
 
 	/*
-		сеттер для значения матрицы
-		заменяет коэффициент, стоящий в строке row и столбце col на value
-		args:
-			row - номер строки
-			col - номер столбца
-			value - новое значение коэффицента
-		Исключения:
-			- если row <= 0
-			- если col <= 0
-			- если row >= rank
-			- если col >= rank
+	изменение матрицы
+	Изменяет текущую матрицу на входную
+	args:
+		rank - ранг матрицы
+		matrix - матрица
+	выбрасывает исключение, rank меньше 0, а в matrix встречен нулевой указатель
 	*/
-	void setValue(int row, int col, double value);
+	virtual void setMatrix(int rank, double ** matrix);
 
-	/*
-		геттер для ранга
-		возвращает значение ранга матрицы
-		return - значение ранга матрицы
-	*/
-	int getRank();
 
-	/*
-		геттер для матрицы
-		возвращает копию матрицы
-		return - копия матрицы _matrix
-	*/
-	double ** getMatrix();
-
-	/*
-		геттер для значения матрицы
-		возвращает коэффициент, стоящий в строке row и столбце col
-		args:
-			row - номер строки
-			col - номер столбца
-		Исключения:
-			- если row <= 0
-			- если col <= 0
-			- если row >= rank
-			- если col >= rank
-		return - значение коэффицента, стоящего в строке row и столбце col
-	*/
-	double getValue(int row, int col);
-
-	/*
-		Транспонирование матрицы
-	*/
-	void transponse();
 
 	/*
 		Вычисление определителя матрицы
@@ -108,51 +64,12 @@ public:
 	double determinant();
 
 	/*
-		Преобразование матрицы в строку char *
-		return - строковое представление матрицы
-	*/
-	char* toString();
-
-	/*--------------ЛАБОРАТОРНАЯ РАБОТА 2--------------*/
-
-	/*
-		Оператор сложения матриц
-		args:
-			matrix1 - левое слагаемое
-			matrix2 - правое слагаемое
-		Исключения:
-			если _rank != matrix._rank, то есть матрицы должны быть одинакового размера
-		return - матрица-результат сложения матрицы1 с матрицей2
-	*/
-	friend SquareMatrix operator+(const SquareMatrix& matrix1,const SquareMatrix& matrix2);
-
-	/*
-		Оператор вычитания матриц
-		args:
-			matrix1 - уменьшаемая матрица
-			matrix2 - вычитаемая матрица
-		Исключения:
-			если _rank != matrix._rank, то есть матрицы должны быть одинакового размера
-		return - матрица-результат вычитания матрицы2 из матрицы1
-	*/
-	friend SquareMatrix operator-(const SquareMatrix& matrix1, const SquareMatrix& matrix2);
-
-	/*
-		Оператор индексирования
-		args:
-			index - номер строки матрицы
-		Исключения:
-			если index < 0
-			если index >=_rank
-		return - копия массива-строки матрицы
-	*/
-	double* operator[](int index);
-
-	/*
 		Оператор ()
 		return - значение определителя матрицы
 	*/
 	double operator()();
+
+	
 
 	/*
 		Оператор присваивания матриц
@@ -164,74 +81,27 @@ public:
 	*/
 	SquareMatrix& operator=(const SquareMatrix& matrix);
 
-	/*--------------ЛАБОРАТОРНАЯ РАБОТА 3--------------*/
-
-	//вывод в обычный поток
-	//args:
-	//	stream - ссылка на поток вывода
-	//	matrix - выводимая матрица
-	//return - ссылка на поток вывода
-	friend ostream& operator<<(ostream& stream, const SquareMatrix& matrix);
-
-	//вывод в ффайловый	поток
-	//args:
-	//	stream - ссылка на файловый поток вывода
-	//	matrix - выводимая матрица
-	//return - ссылка на файловый поток вывода
-	friend ofstream& operator<<(ofstream& stream, const SquareMatrix& matrix);
-
-	//чтение с обычного потока
-	//args:
-	//	stream - ссылка на поток ввода
-	//	matrix - вводимая матрица
-	//return - ссылка на поток ввода
-	friend istream& operator>>(istream& stream, SquareMatrix& matrix);
-
-	//чтение с файлового потока
-	//args:
-	//	stream - ссылка на файловый поток ввода
-	//	matrix - вводимая матрица
-	//return - ссылка на файловый поток ввода
-	friend ifstream& operator>>(ifstream& stream, SquareMatrix& matrix);
-
-	//запись в бинарный файл
-	//args:
-	//	file - ссылка на бинарный файл
-	void write(fstream& file);
-
-	//чтение с бинарного файла
-	//args:
-	//	file - ссылка на бинарный файл
-	void read(fstream& file);
-
-private:
-
-	//порядок матрицы (ранг)
-	int _rank;
-
-	//массив матрицы - двумерный массив с коэффицентами
-	double** _matrix;
-
-	//статический член класса для подсчета количества созданных объектов
-	static int _count;
-
 	/*
-		Метод для копирования матрицы
+		Оператор присваивания матриц
 		args:
-			rank - ранг копируемой матрицы
-			matrix - двумерный массив коэффициентов копируемой матрицы
-		return - копия массива matrix
+			matrix - присваиваемая матрица
+		return - ссылка на текущую матрицу
+		ссылка необходима для того, чтобы сделать множественное присваивание
+		к примеру, obj1 = obj2 = obj3 = obj4;
+		возвращает исключение, если matrix - прямоугольная матрица
 	*/
-	double** copyMatrix(int rank, double** matrix);
+	SquareMatrix& operator=(const Matrix& matrix);
+
+protected:
 
 	/*
-		Вычисление минора элемента, стоящего в строке row и стобце col матрицы matrix ранга rank
-		args:
-			row - строка, в которой находится элемент, минор которого нужно вычислить
-			col - столбец, в котором находится элемент, минор которого нужно вычислить
-			rank - ранг матрицы, в которой находится элемент, минор которого нужно вычислить
-			matrix - сама матрица ранга rank
-		return - значение минора
+	Вычисление минора элемента, стоящего в строке row и стобце col матрицы matrix ранга rank
+	args:
+		row - строка, в которой находится элемент, минор которого нужно вычислить
+		col - столбец, в котором находится элемент, минор которого нужно вычислить
+		rank - ранг матрицы, в которой находится элемент, минор которого нужно вычислить
+		matrix - сама матрица ранга rank
+	return - значение минора
 	*/
 	double minor(int row, int col, int rank, double** matrix);
 };
