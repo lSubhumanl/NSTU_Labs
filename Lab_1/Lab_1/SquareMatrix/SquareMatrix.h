@@ -92,6 +92,13 @@ public:
 	*/
 	SquareMatrix& operator=(const Matrix& matrix);
 
+
+	/*
+	Функция вывода в консоль содержимого матрицы и класса
+	Нужна для демонстрации полиморфизма
+	*/
+	virtual void print() override;
+
 protected:
 
 	/*

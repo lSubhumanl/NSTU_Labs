@@ -36,6 +36,15 @@
     <ClCompile Include="MatrixTests\MatrixTests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Queue\Queue.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Queue\Node.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="QueueTests\QueueTests.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SquareMatrixTests\SquareMatrixTests.h">
@@ -54,6 +63,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="MatrixTests\MatrixTests.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue\Queue.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueTests\QueueTests.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

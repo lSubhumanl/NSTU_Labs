@@ -139,6 +139,12 @@ void CramersRule::transponse()
     setMatrix(_rows, _cols, newMatrix);
 }
 
+void CramersRule::print()
+{
+    cout << "CLASS: CramersRule" << endl;
+    cout << (*this) << endl;
+}
+
 //вычисление определителя матрицы
 double CramersRule::determinant(int rank,double ** matrix)
 {

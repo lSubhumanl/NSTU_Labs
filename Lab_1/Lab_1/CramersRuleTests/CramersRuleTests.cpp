@@ -522,13 +522,13 @@ void CramersRuleTests::fileInputOutput()
 	//инициализируем объект для вывода в файл конструктором с параметром
 	CramersRule objectForOutput(expectedRows, expectedCols, expectedMatrix);
 	//выводим объект в файл
-	fstream output("test.txt");
+	ofstream output("test.txt");
 	output << objectForOutput;
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
 	CramersRule received(1, 2, expectedMatrix);
-	fstream input("test.txt");
+	ifstream input("test.txt");
 	input >> received;
 	input.close();
 

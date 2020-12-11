@@ -79,6 +79,13 @@ public:
 	*/
 	virtual void transponse() override;
 
+
+	/*
+	Функция вывода в консоль содержимого матрицы и класса
+	Нужна для демонстрации полиморфизма
+	*/
+	virtual void print() override;
+
 protected:
 
 	/*

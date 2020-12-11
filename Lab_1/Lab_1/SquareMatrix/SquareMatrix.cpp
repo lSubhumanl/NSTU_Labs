@@ -31,6 +31,12 @@ SquareMatrix& SquareMatrix::operator=(const Matrix& matrix)
 	return *this;
 }
 
+void SquareMatrix::print()
+{
+	cout << "CLASS: SquareMatrix" << endl;
+	cout << (*this) << endl;
+}
+
 
 //изменение матрицы
 void SquareMatrix::setMatrix(int rows, int cols, double** matrix)

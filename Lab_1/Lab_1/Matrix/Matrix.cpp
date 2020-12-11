@@ -273,6 +273,31 @@ void Matrix::read(fstream& file)
     setMatrix(rows, cols, matrix);
 }
 
+//вывод в консоль
+void Matrix::print()
+{
+    cout << "CLASS: Matrix" << endl;
+
+    cout << (*this) << endl;
+}
+
+//оператор сравнения "равно"
+bool Matrix::operator==(Matrix& matrix)
+{
+    if (_rows != matrix._rows)
+        return false;
+
+    if (_cols != matrix._cols)
+        return false;
+
+    for (int i = 0; i < _rows; i++)
+        for (int j = 0; j < _cols; j++)
+            if (_matrix[i][j] != matrix._matrix[i][j])
+                return false;
+
+    return true;
+}
+
 //оператор вывода в поток
 ostream& operator<<(ostream& stream, const Matrix& matrix)
 {

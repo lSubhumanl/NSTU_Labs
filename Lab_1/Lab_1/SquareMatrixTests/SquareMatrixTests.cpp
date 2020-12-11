@@ -522,13 +522,13 @@ void SquareMatrixTests::fileInputOutput()
 	//инициализируем объект для вывода в файл конструктором с параметром
 	SquareMatrix objectForOutput(expectedRows, expectedMatrix);
 	//выводим объект в файл
-	fstream output("test.txt");
+	ofstream output("test.txt");
 	output << objectForOutput;
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
 	SquareMatrix received( 1, expectedMatrix);
-	fstream input("test.txt");
+	ifstream input("test.txt");
 	input >> received;
 	input.close();
 

@@ -162,6 +162,20 @@ public:
 	*/
 	void read(fstream& file);
 
+	/*
+	Метод для демонстрации динамического полимморфизма
+	Выводит в консоль содержимое объекта и его класс
+	*/
+	virtual void print();
+
+	/*
+	Оператор сравнения "равно"
+	args:
+		matrix - сравниваемая матрица
+	return - TRUE, если матрицы равны, FALSE - в обратном случае
+	*/
+	bool operator==(Matrix& matrix);
+
 protected:
 
 	/*

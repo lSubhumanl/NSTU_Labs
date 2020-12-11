@@ -520,13 +520,13 @@ void MatrixTests::fileInputOutput()
 	//инициализируем объект для вывода в файл конструктором с параметром
 	Matrix objectForOutput(expectedRows, expectedCols, expectedMatrix);
 	//выводим объект в файл
-	fstream output("test.txt");
+	ofstream output("test.txt");
 	output << objectForOutput;
 	output.close();
 
 	//в новый объект (для сравнения) считываем данные из файла
 	Matrix received(1, 1, expectedMatrix);
-	fstream input("test.txt");
+	ifstream input("test.txt");
 	input >> received;
 	input.close();
 
