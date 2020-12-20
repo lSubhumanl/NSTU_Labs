@@ -16,6 +16,9 @@ public:
 	//тест поиска 
 	void search();
 
+	//тест динамического полиморфизма
+	void polymorphism();
+
 	//очистка памяти
 	void clearMemory(int rows, int cols, double** matrix);
 

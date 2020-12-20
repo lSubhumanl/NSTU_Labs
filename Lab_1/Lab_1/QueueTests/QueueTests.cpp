@@ -154,3 +154,50 @@ void QueueTests::search()
 	delete[] arr;
 	clearMemory(expectedRows, expectedCols, expectedMatrix);
 }
+
+void QueueTests::polymorphism()
+{
+	int rows = 4;
+	int cols = 5;
+	double** matrix = new double* [rows];
+	for (int i = 0; i < rows; i++)
+	{
+		matrix[i] = new double[cols];
+		for (int j = 0; j < cols; j++)
+			matrix[i][j] = MIN + rand() % (MAX + abs(MIN));
+	}	
+	
+	int len = 3;
+	Matrix** arr = new Matrix * [len];
+	arr[0] = new Matrix(rows, cols - 2, matrix);
+	arr[1] = new CramersRule(rows, cols, matrix);
+	arr[2] = new SquareMatrix(rows, matrix);
+
+	char** expected = new char* [3];
+	expected[0] = const_cast<char*>(typeid(Matrix).name());
+	expected[1] = const_cast<char*>(typeid(CramersRule).name());
+	expected[2] = const_cast<char*>(typeid(SquareMatrix).name());
+
+	Queue received;
+
+	for (int i = 0; i < len; i++)
+		received.push((*arr[i]));
+
+	for (int i = 0; i < len; i++)
+	{
+		Matrix& temp = received.pop();
+
+		if (strcmp(expected[i], typeid(temp).name()))
+		{
+			delete[] arr;
+			clearMemory(rows, cols, matrix);
+
+			throw exception("Error in polymophism test!");
+		}
+	}
+
+	cout << "Polymophism test completed!" << endl;
+
+	delete[] arr;
+	clearMemory(rows, cols, matrix);
+}

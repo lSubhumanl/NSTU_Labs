@@ -349,6 +349,15 @@ int main()
 		{
 			cout << error.what() << endl;
 		}
+
+		try
+		{
+			tester.polymorphism();
+		}
+		catch (const std::exception& error)
+		{
+			cout << error.what() << endl;
+		}
 	}
 	cout << endl;
 
